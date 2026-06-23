@@ -1,6 +1,7 @@
 package br.edu.ifrn.qagym.model;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Loan {
 
@@ -52,8 +53,14 @@ public class Loan {
     }
 
     public long daysLate(LocalDate currentDate) {
-        // TODO: calcular quantidade de dias de atraso
-        return 0;
+        LocalDate dateToCompare = isReturned() ? returnDate : currentDate;
+
+
+        if (dateToCompare != null && dateToCompare.isAfter(expectedReturnDate)) {
+            return ChronoUnit.DAYS.between(expectedReturnDate, dateToCompare);
+        }
+
+        return 0L;
     }
 
     public double calculateFine(LocalDate currentDate) {
